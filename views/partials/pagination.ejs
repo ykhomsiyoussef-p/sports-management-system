@@ -1,0 +1,18 @@
+<% /*
+  Expects: basePath (e.g. "/teams"), page, totalPages, extraQuery (string, e.g. "&search=lions")
+*/ %>
+<% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+  <div class="flex items-center justify-center gap-2 mt-6">
+    <a
+      href="<%= basePath %>?page=<%= Math.max(page - 1, 1) %><%= typeof extraQuery !== 'undefined' ? extraQuery : '' %>"
+      class="page-link <%= page <= 1 ? 'page-link-disabled' : '' %>"
+    >&laquo; Prev</a>
+
+    <span class="text-sm text-slate-600">Page <%= page %> of <%= totalPages %></span>
+
+    <a
+      href="<%= basePath %>?page=<%= Math.min(page + 1, totalPages) %><%= typeof extraQuery !== 'undefined' ? extraQuery : '' %>"
+      class="page-link <%= page >= totalPages ? 'page-link-disabled' : '' %>"
+    >Next &raquo;</a>
+  </div>
+<% } %>

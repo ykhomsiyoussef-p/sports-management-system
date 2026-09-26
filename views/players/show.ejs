@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold">#<%= player.jerseyNumber %> <%= player.name %></h1>
+    <div class="flex gap-2">
+      <a href="/players/<%= player._id %>/edit" class="btn-secondary">Edit</a>
+      <form action="/players/<%= player._id %>?_method=DELETE" method="POST" class="confirm-delete" data-name="<%= player.name %>">
+        <button type="submit" class="btn-danger">Delete</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="card">
+      <h2 class="card-title">Player Info</h2>
+      <p class="text-sm text-slate-600 mb-1">Position: <span class="font-medium text-slate-800"><%= player.position %></span></p>
+      <p class="text-sm text-slate-600 mb-1">Nationality: <span class="font-medium text-slate-800"><%= player.nationality %></span></p>
+      <p class="text-sm text-slate-600 mb-1">Date of Birth: <span class="font-medium text-slate-800"><%= new Date(player.dateOfBirth).toLocaleDateString() %></span></p>
+      <p class="text-sm text-slate-600 mb-1">Team: <span class="font-medium text-slate-800"><%= player.team ? player.team.name : '—' %></span></p>
+    </div>
+    <div class="card">
+      <h2 class="card-title">Performance</h2>
+      <p class="text-sm text-slate-600 mb-1">Goals: <span class="font-medium text-slate-800"><%= player.goals %></span></p>
+      <p class="text-sm text-slate-600 mb-1">Rating: <span class="font-medium text-slate-800"><%= '⭐'.repeat(player.rating) %> (<%= player.rating %>/5)</span></p>
+      <p class="text-sm text-slate-600 mb-1">Games Played: <span class="font-medium text-slate-800"><%= player.games.length %></span></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Game History</h2>
+    <div class="divide-y">
+      <% player.games.forEach(function(g) { %>
+        <a href="/games/<%= g._id %>" class="flex items-center justify-between py-3 hover:bg-slate-50 px-2 rounded">
+          <span class="font-medium"><%= g.homeTeam.name %> vs <%= g.awayTeam.name %></span>
+          <span class="text-slate-500 text-sm"><%= new Date(g.date).toLocaleDateString() %></span>
+          <span class="font-semibold"><%= g.homeScore %> - <%= g.awayScore %></span>
+        </a>
+      <% }) %>
+      <% if (!player.games.length) { %>
+        <p class="py-4 text-center text-slate-400">This player hasn't appeared in any games yet.</p>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

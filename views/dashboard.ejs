@@ -1,0 +1,130 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+<%- include('partials/messages') %>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">📊 League Dashboard</h1>
+
+  <!-- Stat cards -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="stat-card">
+      <p class="stat-number"><%= stats.teamCount %></p>
+      <p class="stat-label">Teams</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-number"><%= stats.playerCount %></p>
+      <p class="stat-label">Players</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-number"><%= stats.coachCount %></p>
+      <p class="stat-label">Coaches</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-number"><%= stats.gameCount %></p>
+      <p class="stat-label">Games</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="card">
+      <h2 class="card-title">Goals by Team</h2>
+      <canvas id="goalsChart" height="220"></canvas>
+    </div>
+    <div class="card">
+      <h2 class="card-title">Players by Position</h2>
+      <canvas id="positionsChart" height="220"></canvas>
+    </div>
+    <div class="card">
+      <h2 class="card-title">Games by Status</h2>
+      <canvas id="statusChart" height="220"></canvas>
+    </div>
+    <div class="card">
+      <h2 class="card-title">🥅 Top Scorers</h2>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-slate-500 border-b">
+            <th class="py-2">Player</th>
+            <th class="py-2">Team</th>
+            <th class="py-2 text-right">Goals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% topScorers.forEach(function(p) { %>
+            <tr class="border-b last:border-0">
+              <td class="py-2"><a href="/players/<%= p._id %>" class="text-blue-600 hover:underline"><%= p.name %></a></td>
+              <td class="py-2 text-slate-600"><%= p.team ? p.team.name : '—' %></td>
+              <td class="py-2 text-right font-semibold"><%= p.goals %></td>
+            </tr>
+          <% }) %>
+          <% if (!topScorers.length) { %>
+            <tr><td colspan="3" class="py-4 text-center text-slate-400">No players yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Recent games -->
+  <div class="card">
+    <h2 class="card-title">🗓️ Recent Games</h2>
+    <div class="divide-y">
+      <% recentGames.forEach(function(g) { %>
+        <a href="/games/<%= g._id %>" class="flex items-center justify-between py-3 hover:bg-slate-50 px-2 rounded">
+          <span class="font-medium"><%= g.homeTeam ? g.homeTeam.name : 'TBD' %> vs <%= g.awayTeam ? g.awayTeam.name : 'TBD' %></span>
+          <span class="text-slate-500 text-sm"><%= new Date(g.date).toLocaleDateString() %></span>
+          <span class="font-semibold"><%= g.homeScore %> - <%= g.awayScore %></span>
+          <span class="badge badge-<%= g.status.toLowerCase() %>"><%= g.status %></span>
+        </a>
+      <% }) %>
+      <% if (!recentGames.length) { %>
+        <p class="py-4 text-center text-slate-400">No games scheduled yet.</p>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<script>
+  const teamGoals = <%- JSON.stringify(teamGoalsChart) %>;
+  const playersByPosition = <%- JSON.stringify(playersByPosition) %>;
+  const gamesByStatus = <%- JSON.stringify(gamesByStatus) %>;
+
+  new Chart(document.getElementById('goalsChart'), {
+    type: 'bar',
+    data: {
+      labels: teamGoals.map(t => t.name),
+      datasets: [{
+        label: 'Goals',
+        data: teamGoals.map(t => t.goals),
+        backgroundColor: teamGoals.map(t => t.color || '#2563eb'),
+      }],
+    },
+    options: { responsive: true, plugins: { legend: { display: false } } },
+  });
+
+  new Chart(document.getElementById('positionsChart'), {
+    type: 'doughnut',
+    data: {
+      labels: playersByPosition.map(p => p._id),
+      datasets: [{
+        data: playersByPosition.map(p => p.count),
+        backgroundColor: ['#2563eb', '#16a34a', '#f59e0b', '#dc2626'],
+      }],
+    },
+    options: { responsive: true },
+  });
+
+  new Chart(document.getElementById('statusChart'), {
+    type: 'pie',
+    data: {
+      labels: gamesByStatus.map(s => s._id),
+      datasets: [{
+        data: gamesByStatus.map(s => s.count),
+        backgroundColor: ['#0ea5e9', '#a855f7', '#22c55e', '#64748b'],
+      }],
+    },
+    options: { responsive: true },
+  });
+</script>
+
+<%- include('partials/footer') %>

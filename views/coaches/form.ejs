@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-xl mx-auto w-full px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6"><%= title %></h1>
+
+  <form action="<%= formAction %>" method="POST" class="card space-y-4">
+    <div>
+      <label class="label">Full Name *</label>
+      <input type="text" name="name" value="<%= coach.name || '' %>" required class="input" />
+    </div>
+
+    <div>
+      <label class="label">Nationality *</label>
+      <input type="text" name="nationality" value="<%= coach.nationality || '' %>" required class="input" />
+    </div>
+
+    <div>
+      <label class="label">Years of Experience *</label>
+      <input type="number" name="experienceYears" value="<%= coach.experienceYears || '' %>" min="0" max="60" required class="input" />
+    </div>
+
+    <div>
+      <label class="label">Photo URL</label>
+      <input type="text" name="photoUrl" value="<%= coach.photoUrl || '' %>" placeholder="https://..." class="input" />
+    </div>
+
+    <div>
+      <label class="label">Team</label>
+      <select name="team" class="input">
+        <option value="">-- Unassigned --</option>
+        <% teams.forEach(function(t) { %>
+          <option value="<%= t._id %>" <%= (coach.team && String(coach.team) === String(t._id)) ? 'selected' : '' %>>
+            <%= t.name %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="flex gap-2 pt-2">
+      <button type="submit" class="btn-primary">Save Coach</button>
+      <a href="/coaches" class="btn-secondary">Cancel</a>
+    </div>
+  </form>
+</main>
+
+<%- include('../partials/footer') %>

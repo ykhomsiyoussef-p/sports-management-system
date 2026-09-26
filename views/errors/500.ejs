@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 flex items-center justify-center px-4">
+  <div class="text-center">
+    <p class="text-6xl mb-4">💥</p>
+    <h1 class="text-3xl font-bold mb-2">Something Went Wrong</h1>
+    <p class="text-slate-600 mb-6">An unexpected error occurred on our end.</p>
+    <a href="/dashboard" class="btn-primary">Back to Dashboard</a>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <pre class="mt-6 text-left text-xs bg-slate-900 text-red-300 p-4 rounded overflow-auto max-w-2xl mx-auto"><%= error.stack %></pre>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

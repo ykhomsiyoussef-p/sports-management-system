@@ -1,0 +1,43 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold"><%= game.homeTeam.name %> vs <%= game.awayTeam.name %></h1>
+    <div class="flex gap-2">
+      <a href="/games/<%= game._id %>/edit" class="btn-secondary">Edit</a>
+      <form action="/games/<%= game._id %>?_method=DELETE" method="POST" class="confirm-delete" data-name="this game">
+        <button type="submit" class="btn-danger">Delete</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mb-6 text-center">
+    <p class="text-sm text-slate-500 mb-2">📍 <%= game.stadium %> · <%= new Date(game.date).toLocaleString() %></p>
+    <div class="flex items-center justify-center gap-6 text-3xl font-bold">
+      <span><%= game.homeTeam.name %></span>
+      <span><%= game.homeScore %> - <%= game.awayScore %></span>
+      <span><%= game.awayTeam.name %></span>
+    </div>
+    <span class="badge badge-<%= game.status.toLowerCase() %> mt-3 inline-block"><%= game.status %></span>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Lineup (<%= game.players.length %> players)</h2>
+    <% if (game.players.length) { %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <% game.players.forEach(function(p) { %>
+          <a href="/players/<%= p._id %>" class="flex justify-between items-center px-3 py-2 rounded hover:bg-slate-50 border">
+            <span>#<%= p.jerseyNumber %> <%= p.name %></span>
+            <span class="text-xs text-slate-500"><%= p.team ? p.team.name : '' %></span>
+          </a>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-slate-400">No lineup has been set for this game yet.</p>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

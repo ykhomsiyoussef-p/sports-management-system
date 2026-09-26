@@ -1,0 +1,17 @@
+<div class="max-w-6xl mx-auto px-4 mt-4 space-y-2">
+  <% if (successMessages && successMessages.length) { %>
+    <% successMessages.forEach(function(msg) { %>
+      <div class="flash flash-success">
+        <span>✅ <%= msg %></span>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <% if (errorMessages && errorMessages.length) { %>
+    <% errorMessages.forEach(function(msg) { %>
+      <div class="flash flash-error">
+        <span>⚠️ <%= msg %></span>
+      </div>
+    <% }) %>
+  <% } %>
+</div>

@@ -1,0 +1,53 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-xl mx-auto w-full px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6"><%= title %></h1>
+
+  <form action="<%= formAction %>" method="POST" class="card space-y-4">
+    <div>
+      <label class="label">Team Name *</label>
+      <input type="text" name="name" value="<%= team.name || '' %>" required class="input" />
+    </div>
+
+    <div>
+      <label class="label">City *</label>
+      <input type="text" name="city" value="<%= team.city || '' %>" required class="input" />
+    </div>
+
+    <div>
+      <label class="label">Founded Year</label>
+      <input type="number" name="foundedYear" value="<%= team.foundedYear || '' %>" min="1850" max="<%= new Date().getFullYear() %>" class="input" />
+    </div>
+
+    <div>
+      <label class="label">Primary Color</label>
+      <input type="color" name="primaryColor" value="<%= team.primaryColor || '#2563eb' %>" class="h-10 w-20 p-1 border rounded" />
+    </div>
+
+    <div>
+      <label class="label">Logo URL</label>
+      <input type="text" name="logoUrl" value="<%= team.logoUrl || '' %>" placeholder="https://..." class="input" />
+    </div>
+
+    <div>
+      <label class="label">Coach</label>
+      <select name="coach" class="input">
+        <option value="">-- Unassigned --</option>
+        <% coaches.forEach(function(c) { %>
+          <option value="<%= c._id %>" <%= (team.coach && String(team.coach) === String(c._id)) ? 'selected' : '' %>>
+            <%= c.name %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="flex gap-2 pt-2">
+      <button type="submit" class="btn-primary">Save Team</button>
+      <a href="/teams" class="btn-secondary">Cancel</a>
+    </div>
+  </form>
+</main>
+
+<%- include('../partials/footer') %>

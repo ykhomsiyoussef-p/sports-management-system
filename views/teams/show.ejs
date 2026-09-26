@@ -1,0 +1,67 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <span class="w-6 h-6 rounded-full" style="background-color: <%= team.primaryColor %>"></span>
+      <h1 class="text-2xl font-bold"><%= team.name %></h1>
+    </div>
+    <div class="flex gap-2">
+      <a href="/teams/<%= team._id %>/edit" class="btn-secondary">Edit</a>
+      <form action="/teams/<%= team._id %>?_method=DELETE" method="POST" class="confirm-delete" data-name="<%= team.name %>">
+        <button type="submit" class="btn-danger">Delete</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="card md:col-span-1">
+      <h2 class="card-title">Team Info</h2>
+      <p class="text-sm text-slate-600 mb-1">📍 City: <span class="font-medium text-slate-800"><%= team.city %></span></p>
+      <% if (team.foundedYear) { %>
+        <p class="text-sm text-slate-600 mb-1">📅 Founded: <span class="font-medium text-slate-800"><%= team.foundedYear %></span></p>
+      <% } %>
+      <p class="text-sm text-slate-600">👔 Coach:
+        <span class="font-medium text-slate-800">
+          <%= team.coach ? team.coach.name : 'Unassigned' %>
+        </span>
+      </p>
+    </div>
+
+    <div class="card md:col-span-2">
+      <h2 class="card-title">Roster (<%= team.players.length %>)</h2>
+      <% if (team.players.length) { %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <% team.players.forEach(function(p) { %>
+            <a href="/players/<%= p._id %>" class="flex justify-between items-center px-3 py-2 rounded hover:bg-slate-50 border">
+              <span>#<%= p.jerseyNumber %> <%= p.name %></span>
+              <span class="text-xs text-slate-500"><%= p.position %></span>
+            </a>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-slate-400">No players assigned to this team yet.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Recent Games</h2>
+    <div class="divide-y">
+      <% games.forEach(function(g) { %>
+        <a href="/games/<%= g._id %>" class="flex items-center justify-between py-3 hover:bg-slate-50 px-2 rounded">
+          <span class="font-medium"><%= g.homeTeam.name %> vs <%= g.awayTeam.name %></span>
+          <span class="text-slate-500 text-sm"><%= new Date(g.date).toLocaleDateString() %></span>
+          <span class="font-semibold"><%= g.homeScore %> - <%= g.awayScore %></span>
+        </a>
+      <% }) %>
+      <% if (!games.length) { %>
+        <p class="py-4 text-center text-slate-400">No games scheduled yet.</p>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

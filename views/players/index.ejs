@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <h1 class="text-2xl font-bold">🏃 Players</h1>
+    <a href="/players/new" class="btn-primary">+ Add Player</a>
+  </div>
+
+  <form method="GET" action="/players" class="mb-6 flex flex-col sm:flex-row gap-3">
+    <input
+      type="text" name="search" value="<%= search %>"
+      placeholder="Search players by name..."
+      class="input w-full sm:w-64"
+    />
+    <select name="team" class="input w-full sm:w-56" onchange="this.form.submit()">
+      <option value="">All Teams</option>
+      <% teams.forEach(function(t) { %>
+        <option value="<%= t._id %>" <%= teamFilter === String(t._id) ? 'selected' : '' %>><%= t.name %></option>
+      <% }) %>
+    </select>
+    <button type="submit" class="btn-secondary">Filter</button>
+  </form>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% players.forEach(function(p) { %>
+      <a href="/players/<%= p._id %>" class="card hover:shadow-lg transition-shadow">
+        <div class="flex justify-between items-start mb-2">
+          <h2 class="font-semibold text-lg">#<%= p.jerseyNumber %> <%= p.name %></h2>
+          <span class="badge badge-position"><%= p.position %></span>
+        </div>
+        <p class="text-slate-600 text-sm">🏳️ <%= p.nationality %></p>
+        <p class="text-slate-500 text-sm mt-1"><%= p.team ? p.team.name : 'No team' %> · ⚽ <%= p.goals %> goals</p>
+      </a>
+    <% }) %>
+    <% if (!players.length) { %>
+      <p class="col-span-full text-center text-slate-400 py-10">No players found.</p>
+    <% } %>
+  </div>
+
+  <%- include('../partials/pagination', {
+    basePath: '/players', page, totalPages,
+    extraQuery: (search ? ('&search=' + encodeURIComponent(search)) : '') + (teamFilter ? ('&team=' + teamFilter) : '')
+  }) %>
+</main>
+
+<%- include('../partials/footer') %>

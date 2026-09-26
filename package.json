@@ -1,0 +1,25 @@
+{
+  "name": "sports-management-system",
+  "version": "1.0.0",
+  "description": "Full-stack Sports Management System built with Express, MongoDB and Mongoose",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "seed": "node db/seed/seed.js"
+  },
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.5.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

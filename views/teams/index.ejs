@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <h1 class="text-2xl font-bold">🏟️ Teams</h1>
+    <a href="/teams/new" class="btn-primary">+ Add Team</a>
+  </div>
+
+  <form method="GET" action="/teams" class="mb-6">
+    <input
+      type="text" name="search" value="<%= search %>"
+      placeholder="Search teams by name..."
+      class="input w-full sm:w-80"
+    />
+  </form>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% teams.forEach(function(team) { %>
+      <a href="/teams/<%= team._id %>" class="card hover:shadow-lg transition-shadow">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="w-4 h-4 rounded-full" style="background-color: <%= team.primaryColor %>"></span>
+          <h2 class="font-semibold text-lg"><%= team.name %></h2>
+        </div>
+        <p class="text-slate-600 text-sm">📍 <%= team.city %><% if (team.foundedYear) { %> · Est. <%= team.foundedYear %><% } %></p>
+        <p class="text-slate-500 text-sm mt-1">Coach: <%= team.coach ? team.coach.name : 'Unassigned' %></p>
+      </a>
+    <% }) %>
+    <% if (!teams.length) { %>
+      <p class="col-span-full text-center text-slate-400 py-10">No teams found.</p>
+    <% } %>
+  </div>
+
+  <%- include('../partials/pagination', { basePath: '/teams', page, totalPages, extraQuery: search ? ('&search=' + encodeURIComponent(search)) : '' }) %>
+</main>
+
+<%- include('../partials/footer') %>

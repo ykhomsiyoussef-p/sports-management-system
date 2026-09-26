@@ -1,0 +1,40 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/messages') %>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <h1 class="text-2xl font-bold">⚽ Games</h1>
+    <a href="/games/new" class="btn-primary">+ Schedule Game</a>
+  </div>
+
+  <form method="GET" action="/games" class="mb-6">
+    <input
+      type="text" name="search" value="<%= search %>"
+      placeholder="Search by team or stadium..."
+      class="input w-full sm:w-80"
+    />
+  </form>
+
+  <div class="space-y-3">
+    <% games.forEach(function(g) { %>
+      <a href="/games/<%= g._id %>" class="card flex flex-wrap items-center justify-between gap-3 hover:shadow-lg transition-shadow">
+        <div>
+          <p class="font-semibold"><%= g.homeTeam ? g.homeTeam.name : 'TBD' %> vs <%= g.awayTeam ? g.awayTeam.name : 'TBD' %></p>
+          <p class="text-sm text-slate-500">📍 <%= g.stadium %> · <%= new Date(g.date).toLocaleString() %></p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-lg font-bold"><%= g.homeScore %> - <%= g.awayScore %></span>
+          <span class="badge badge-<%= g.status.toLowerCase() %>"><%= g.status %></span>
+        </div>
+      </a>
+    <% }) %>
+    <% if (!games.length) { %>
+      <p class="text-center text-slate-400 py-10">No games found.</p>
+    <% } %>
+  </div>
+
+  <%- include('../partials/pagination', { basePath: '/games', page, totalPages, extraQuery: search ? ('&search=' + encodeURIComponent(search)) : '' }) %>
+</main>
+
+<%- include('../partials/footer') %>
