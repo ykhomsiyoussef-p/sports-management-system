@@ -4,6 +4,7 @@ A full-stack CRUD web application built with **Express.js**, **MongoDB**, and **
 
 ## Features
 
+- **Authentication & roles**: every page requires login. New accounts self-register as read-only "viewer"; only the seeded "admin" account can create, edit, or delete anything
 - Full CRUD for Teams, Coaches, Players, and Games
 - Server-side pagination (6 items per page)
 - Search (by name/stadium) and filtering (players by team)
@@ -110,6 +111,7 @@ sports-management/
    ```bash
    npm run seed
    ```
+   This also creates the **admin account** using `ADMIN_USERNAME` / `ADMIN_PASSWORD` from your `.env` (defaults to `admin` / `ChangeMe123!` if not set — change these before deploying to production!). The credentials are printed to the console when seeding finishes.
 
 5. **Start the app**
    ```bash
@@ -119,6 +121,13 @@ sports-management/
    ```
 
 6. Open **http://localhost:3000** in your browser. You'll be redirected to the dashboard.
+
+## Authentication & Roles
+
+- **Admin** (created by the seed script): full access — create, edit, delete everything.
+- **Viewer** (self-registered via `/register`): can log in and browse every page, but all "Add / Edit / Delete" buttons and forms are hidden, and the corresponding routes reject the action server-side too (not just hidden in the UI).
+- To promote a viewer to admin, update their `role` field to `"admin"` directly in the database (e.g. via MongoDB Compass or Atlas' Data Explorer) — there's no UI for this by design, to keep it a deliberate action.
+- Sessions last 1 hour of inactivity (`cookie.maxAge` in `app.js`) and are stored in memory, which is fine for a small class project but not for real production traffic (see the console warning about `MemoryStore`).
 
 ## Notes
 

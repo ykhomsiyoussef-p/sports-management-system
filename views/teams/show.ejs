@@ -9,10 +9,12 @@
       <h1 class="text-2xl font-bold"><%= team.name %></h1>
     </div>
     <div class="flex gap-2">
-      <a href="/teams/<%= team._id %>/edit" class="btn-secondary">Edit</a>
-      <form action="/teams/<%= team._id %>?_method=DELETE" method="POST" class="confirm-delete" data-name="<%= team.name %>">
-        <button type="submit" class="btn-danger">Delete</button>
-      </form>
+      <% if (currentUser && currentUser.role === 'admin') { %>
+        <a href="/teams/<%= team._id %>/edit" class="btn-secondary">Edit</a>
+        <form action="/teams/<%= team._id %>?_method=DELETE" method="POST" class="confirm-delete" data-name="<%= team.name %>">
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      <% } %>
     </div>
   </div>
 

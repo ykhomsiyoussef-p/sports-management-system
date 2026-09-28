@@ -144,3 +144,23 @@
 .badge-live { background-color: #dcfce7; color: #15803d; }
 .badge-finished { background-color: #e2e8f0; color: #334155; }
 .badge-cancelled { background-color: #fee2e2; color: #b91c1c; }
+.badge-admin { background-color: #fef3c7; color: #92400e; margin-left: 0.375rem; }
+.badge-viewer { background-color: #e2e8f0; color: #475569; margin-left: 0.375rem; }
+
+.nav-user-badge {
+  display: flex;
+  align-items: center;
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.readonly-notice {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  display: inline-block;
+}

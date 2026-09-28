@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<div class="flex-1 flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-sm">
+    <div class="text-center mb-6">
+      <span class="text-4xl">🏆</span>
+      <h1 class="text-2xl font-bold mt-2">Sports Management</h1>
+      <p class="text-slate-500 text-sm">Log in to continue</p>
+    </div>
+
+    <%- include('../partials/messages') %>
+
+    <form action="/login" method="POST" class="card space-y-4 mt-4">
+      <div>
+        <label class="label">Username</label>
+        <input type="text" name="username" required autofocus class="input" />
+      </div>
+      <div>
+        <label class="label">Password</label>
+        <input type="password" name="password" required class="input" />
+      </div>
+      <button type="submit" class="btn-primary w-full">Log In</button>
+    </form>
+
+    <p class="text-center text-sm text-slate-500 mt-4">
+      Don't have an account? <a href="/register" class="link">Create one</a> (read-only access)
+    </p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

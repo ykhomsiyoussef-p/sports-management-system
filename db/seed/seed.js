@@ -6,6 +6,7 @@ const Team = require('../../models/Team');
 const Coach = require('../../models/Coach');
 const Player = require('../../models/Player');
 const Game = require('../../models/Game');
+const User = require('../../models/User');
 
 const TEAM_DATA = [
   { name: 'Casablanca Lions', city: 'Casablanca', foundedYear: 1998, primaryColor: '#dc2626' },
@@ -54,7 +55,17 @@ async function seed() {
     Coach.deleteMany({}),
     Player.deleteMany({}),
     Game.deleteMany({}),
+    User.deleteMany({}),
   ]);
+
+  console.log('Creating the admin account...');
+  const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'ChangeMe123!';
+  const admin = new User({ username: adminUsername, role: 'admin' });
+  await admin.setPassword(adminPassword);
+  await admin.save();
+  console.log(`Admin account ready -> username: "${adminUsername}", password: "${adminPassword}"`);
+  console.log('(Set ADMIN_USERNAME / ADMIN_PASSWORD in your .env to customize this.)');
 
   console.log('Seeding teams...');
   const teams = await Team.insertMany(TEAM_DATA);
@@ -128,6 +139,7 @@ async function seed() {
 
   console.log('--------------------------------------------------');
   console.log(`Seeded ${teams.length} teams, ${coaches.length} coaches, ${players.length} players, ${games.length} games.`);
+  console.log(`Admin login -> username: "${adminUsername}" / password: "${adminPassword}"`);
   console.log('--------------------------------------------------');
 
   await mongoose.disconnect();

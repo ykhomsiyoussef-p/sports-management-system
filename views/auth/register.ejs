@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+
+<div class="flex-1 flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-sm">
+    <div class="text-center mb-6">
+      <span class="text-4xl">🏆</span>
+      <h1 class="text-2xl font-bold mt-2">Create Account</h1>
+      <p class="text-slate-500 text-sm">New accounts get read-only (viewer) access</p>
+    </div>
+
+    <%- include('../partials/messages') %>
+
+    <form action="/register" method="POST" class="card space-y-4 mt-4">
+      <div>
+        <label class="label">Username</label>
+        <input type="text" name="username" required autofocus minlength="3" maxlength="30" class="input" placeholder="Letters, numbers, underscores only" />
+      </div>
+      <div>
+        <label class="label">Password</label>
+        <input type="password" name="password" required minlength="6" class="input" />
+      </div>
+      <div>
+        <label class="label">Confirm Password</label>
+        <input type="password" name="confirmPassword" required minlength="6" class="input" />
+      </div>
+      <button type="submit" class="btn-primary w-full">Create Account</button>
+    </form>
+
+    <p class="text-center text-sm text-slate-500 mt-4">
+      Already have an account? <a href="/login" class="link">Log in</a>
+    </p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

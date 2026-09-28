@@ -9,8 +9,10 @@ const methodOverride = require('method-override');
 
 const connectDB = require('./db/connection');
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
+const { loadCurrentUser, requireLogin } = require('./middleware/auth');
 
 const indexRoutes = require('./routes/index');
+const authRoutes = require('./routes/auth');
 const teamRoutes = require('./routes/teams');
 const coachRoutes = require('./routes/coaches');
 const playerRoutes = require('./routes/players');
@@ -53,7 +55,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- Routes ---
+// Load the logged-in user (if any) onto req.currentUser / res.locals.currentUser.
+app.use(loadCurrentUser);
+
+// --- Public routes (no login required) ---
+app.use('/', authRoutes); // /login, /register, /logout
+
+// --- Login wall: everything below this line requires an authenticated session ---
+app.use(requireLogin);
+
+// --- Protected routes ---
 app.use('/', indexRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/teams', teamRoutes);

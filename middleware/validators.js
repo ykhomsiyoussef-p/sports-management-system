@@ -68,10 +68,27 @@ const gameValidationRules = [
     .withMessage('Away score cannot be negative'),
 ];
 
+const registerValidationRules = [
+  body('username').trim().notEmpty().withMessage('Username is required')
+    .isLength({ min: 3, max: 30 }).withMessage('Username must be 3-30 characters')
+    .matches(/^[a-zA-Z0-9_]+$/).withMessage('Username can only contain letters, numbers, and underscores'),
+  body('password').notEmpty().withMessage('Password is required')
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  body('confirmPassword').custom((value, { req }) => value === req.body.password)
+    .withMessage('Passwords do not match'),
+];
+
+const loginValidationRules = [
+  body('username').trim().notEmpty().withMessage('Username is required'),
+  body('password').notEmpty().withMessage('Password is required'),
+];
+
 module.exports = {
   handleValidationErrors,
   teamValidationRules,
   coachValidationRules,
   playerValidationRules,
   gameValidationRules,
+  registerValidationRules,
+  loginValidationRules,
 };

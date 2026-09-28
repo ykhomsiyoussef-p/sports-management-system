@@ -5,7 +5,9 @@
 <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
     <h1 class="text-2xl font-bold">🏟️ Teams</h1>
-    <a href="/teams/new" class="btn-primary">+ Add Team</a>
+    <% if (currentUser && currentUser.role === 'admin') { %>
+      <a href="/teams/new" class="btn-primary">+ Add Team</a>
+    <% } %>
   </div>
 
   <form method="GET" action="/teams" class="mb-6">

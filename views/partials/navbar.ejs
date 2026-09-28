@@ -13,6 +13,15 @@
         <a href="/players" class="nav-link <%= currentPath.startsWith('/players') ? 'nav-link-active' : '' %>">Players</a>
         <a href="/coaches" class="nav-link <%= currentPath.startsWith('/coaches') ? 'nav-link-active' : '' %>">Coaches</a>
         <a href="/games" class="nav-link <%= currentPath.startsWith('/games') ? 'nav-link-active' : '' %>">Games</a>
+        <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+          <span class="nav-user-badge">
+            <%= currentUser.username %>
+            <span class="badge <%= currentUser.role === 'admin' ? 'badge-admin' : 'badge-viewer' %>"><%= currentUser.role %></span>
+          </span>
+          <form action="/logout" method="POST" class="inline">
+            <button type="submit" class="nav-link">Log Out</button>
+          </form>
+        <% } %>
       </div>
 
       <!-- Mobile menu button -->
@@ -30,6 +39,14 @@
       <a href="/players" class="nav-link-mobile">Players</a>
       <a href="/coaches" class="nav-link-mobile">Coaches</a>
       <a href="/games" class="nav-link-mobile">Games</a>
+      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <div class="nav-link-mobile text-slate-400">
+          Logged in as <%= currentUser.username %> (<%= currentUser.role %>)
+        </div>
+        <form action="/logout" method="POST">
+          <button type="submit" class="nav-link-mobile w-full text-left">Log Out</button>
+        </form>
+      <% } %>
     </div>
   </div>
 </nav>

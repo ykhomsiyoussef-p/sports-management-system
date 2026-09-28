@@ -5,7 +5,9 @@
 <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
     <h1 class="text-2xl font-bold">👔 Coaches</h1>
-    <a href="/coaches/new" class="btn-primary">+ Add Coach</a>
+    <% if (currentUser && currentUser.role === 'admin') { %>
+      <a href="/coaches/new" class="btn-primary">+ Add Coach</a>
+    <% } %>
   </div>
 
   <form method="GET" action="/coaches" class="mb-6">
@@ -35,10 +37,14 @@
             <td class="px-4 py-3"><%= c.experienceYears %> yrs</td>
             <td class="px-4 py-3"><%= c.team ? c.team.name : '—' %></td>
             <td class="px-4 py-3 text-right space-x-2">
-              <a href="/coaches/<%= c._id %>/edit" class="link">Edit</a>
-              <form action="/coaches/<%= c._id %>?_method=DELETE" method="POST" class="inline confirm-delete" data-name="<%= c.name %>">
-                <button type="submit" class="link-danger">Delete</button>
-              </form>
+              <% if (currentUser && currentUser.role === 'admin') { %>
+                <a href="/coaches/<%= c._id %>/edit" class="link">Edit</a>
+                <form action="/coaches/<%= c._id %>?_method=DELETE" method="POST" class="inline confirm-delete" data-name="<%= c.name %>">
+                  <button type="submit" class="link-danger">Delete</button>
+                </form>
+              <% } else { %>
+                <span class="text-slate-300 text-sm">—</span>
+              <% } %>
             </td>
           </tr>
         <% }) %>

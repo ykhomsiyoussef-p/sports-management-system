@@ -6,10 +6,12 @@
   <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-bold"><%= game.homeTeam.name %> vs <%= game.awayTeam.name %></h1>
     <div class="flex gap-2">
-      <a href="/games/<%= game._id %>/edit" class="btn-secondary">Edit</a>
-      <form action="/games/<%= game._id %>?_method=DELETE" method="POST" class="confirm-delete" data-name="this game">
-        <button type="submit" class="btn-danger">Delete</button>
-      </form>
+      <% if (currentUser && currentUser.role === 'admin') { %>
+        <a href="/games/<%= game._id %>/edit" class="btn-secondary">Edit</a>
+        <form action="/games/<%= game._id %>?_method=DELETE" method="POST" class="confirm-delete" data-name="this game">
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      <% } %>
     </div>
   </div>
 
